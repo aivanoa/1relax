@@ -16,12 +16,12 @@ if(isset($_REQUEST["s"]))
     if($_REQUEST["s"]!="")
     {
         echo "===1";
-	$ip = $_SERVER['REMOTE_ADDR'];
-    // $ip_data = json_decode(file_get_contents("http://ipinfo.io/{$ip}/json"));
-	       $ip_data = json_decode(file_get_contents("http://api.sypexgeo.net/ajh71/json/{$ip}"));
-    	if ( isset($ip_data->country->iso) && $ip_data->country->iso != 'RU' )
-    	{	
-		  echo "0";exit;
+        $ip = $_SERVER['REMOTE_ADDR'];
+        // $ip_data = json_decode(file_get_contents("http://ipinfo.io/{$ip}/json"));
+        $ip_data = json_decode(file_get_contents("http://api.sypexgeo.net/ajh71/json/{$ip}"));
+        if ( isset($ip_data->country->iso) && $ip_data->country->iso != 'RU' )
+        {
+            echo "0";exit;
         }
 
         // Получаем переменную "s" (session)
@@ -38,14 +38,15 @@ if(isset($_REQUEST["s"]))
             $BALANCE = 0;
             $CLICK = 0;
 
+            //===============DEBUG===========================
             // Получаем баланс салона по символьному коду
             $arSelect = Array("ID", "IBLOCK_ID", "NAME","PROPERTY_SUMM", "PROPERTY_CLICK", "PROPERTY_USER","PROPERTY_SORT","PROPERTY_CITY", "PROPERTY_USER", "PROPERTY_U_POSITION_DOWN");
             $arFilter = Array("IBLOCK_ID"=>1, "CODE"=>$_REQUEST["ELEMENT_CODE"]);
             $result = CIBlockElement::GetList(Array(), $arFilter, false, Array("nPageSize"=>1), $arSelect);
             if($arFields = $result->GetNext())
             {
-				$rsk = CIBlockElement::GetList(Array("PROPERTY_SORT"=>"DESC"), array("IBLOCK_ID"=>1,"<PROPERTY_SORT"=>$arFields["PROPERTY_SORT_VALUE"]), false, Array("nPageSize"=>1), $arSelect);
-				$arRsk = $rsk->GetNext();
+                $rsk = CIBlockElement::GetList(Array("PROPERTY_SORT"=>"DESC"), array("IBLOCK_ID"=>1,"<PROPERTY_SORT"=>$arFields["PROPERTY_SORT_VALUE"]), false, Array("nPageSize"=>1), $arSelect);
+                $arRsk = $rsk->GetNext();
                 $rsk = CIBlockElement::GetList(Array("PROPERTY_SORT"=>"DESC"), array("IBLOCK_ID"=>1,">PROPERTY_SORT"=>$arFields["PROPERTY_SORT_VALUE"]), false, Array("nPageSize"=>1), $arSelect);
                 $arRsk2 = $rsk->GetNext();
 
@@ -56,24 +57,74 @@ if(isset($_REQUEST["s"]))
 
 
             }
-
+            /*echo $arFields["NAME"].'<br>';
+            echo 'Город: '.$arFields["PROPERTY_CITY_VALUE"].'<br>';
+            echo $arFields["ID"].'<br>';
+            echo 'Гарант.ставка: '.$CLICK.'<br><br> Первая компания за PLAY BOY у которой меньше гарант.ставка<br>';*/
             if($CLICK>0)
-            {
-                $maxClickRes = CIBlockElement::GetList(array("PROPERTY_CLICK"=>"DESC"), array("ACTIVE"=>"Y","IBLOCK_ID"=>1,"!ID"=>$arFields["ID"],"PROPERTY_CITY"=>$arFields["PROPERTY_CITY_VALUE"],"<PROPERTY_CLICK"=>$CLICK), false,false,array("PROPERTY_CLICK"))->Fetch();
-                $CLICK2 = $maxClickRes["PROPERTY_CLICK_VALUE"];
-                if(!$CLICK2)
-                    $CLICK2=4;
-                else
-                    $CLICK2++;
+            {	$arSort = array("PROPERTY_CLICK"=>"DESC","PROPERTY_SUMM"=>"DESC");
+                $arFilter = array("ACTIVE"=>"Y","IBLOCK_ID"=>1,"!ID"=>$arFields["ID"],"PROPERTY_CITY"=>$arFields["PROPERTY_CITY_VALUE"],"<=PROPERTY_CLICK"=>$CLICK,"!=PROPERTY_76"=>8,"!=PROPERTY_81"=>12,">=PROPERTY_SUMM"=>$CLICK);
+                $arSelect = array("NAME","PROPERTY_CLICK","PROPERTY_SUMM");
+                //$arSelect = array("PROPERTY_*");
+
+                $maxClickRes = CIBlockElement::GetList($arSort, $arFilter, false,Array("nPageSize"=>5),$arSelect);
+
+
+                while($ar_fields = $maxClickRes->GetNext())
+                {
+                    if($ar_fields['PROPERTY_SUMM_VALUE']>=$ar_fields['PROPERTY_CLICK_VALUE']){
+                        $arrR[] = $ar_fields;
+                    }
+                }
+                //echo '<pre>';
+                //print_r ($arrR);
+                //echo '</pre>';
             }
+            if($arrR[0]['PROPERTY_CLICK_VALUE'] < $CLICK){
+                $CLICK2 = $arrR[0]['PROPERTY_CLICK_VALUE']+1;
+            }elseif($CLICK=='' || !$CLICK || $CLICK==0){
+
+                $CLICK2 = 4;
+            }else{
+
+                $CLICK2 = $CLICK;
+            }
+
+            //====================================
+
+            // Получаем баланс салона по символьному коду
+            /* $arSelect = Array("ID", "IBLOCK_ID", "NAME","PROPERTY_SUMM", "PROPERTY_CLICK", "PROPERTY_USER","PROPERTY_SORT","PROPERTY_CITY", "PROPERTY_USER", "PROPERTY_U_POSITION_DOWN");
+             $arFilter = Array("IBLOCK_ID"=>1, "CODE"=>$_REQUEST["ELEMENT_CODE"]);
+             $result = CIBlockElement::GetList(Array(), $arFilter, false, Array("nPageSize"=>1), $arSelect);
+             if($arFields = $result->GetNext())
+             {
+                 $rsk = CIBlockElement::GetList(Array("PROPERTY_SORT"=>"DESC"), array("IBLOCK_ID"=>1,"<PROPERTY_SORT"=>$arFields["PROPERTY_SORT_VALUE"]), false, Array("nPageSize"=>1), $arSelect);
+                 $arRsk = $rsk->GetNext();
+                 $rsk = CIBlockElement::GetList(Array("PROPERTY_SORT"=>"DESC"), array("IBLOCK_ID"=>1,">PROPERTY_SORT"=>$arFields["PROPERTY_SORT_VALUE"]), false, Array("nPageSize"=>1), $arSelect);
+                 $arRsk2 = $rsk->GetNext();
+
+                 $BALANCE = intval($arFields["PROPERTY_SUMM_VALUE"]);
+                 $CLICK = intval($arFields["PROPERTY_CLICK_VALUE"]);
+                 $USER_ID = intval($arFields["PROPERTY_USER_VALUE"]);
+                 $SALON = intval($arFields["ID"]);
+
+
+             }
+
+             if($CLICK>0)
+             {
+                 $maxClickRes = CIBlockElement::GetList(array("PROPERTY_CLICK"=>"DESC"), array("ACTIVE"=>"Y","IBLOCK_ID"=>10,"!ID"=>$arFields["ID"],"PROPERTY_CITY"=>$arFields["PROPERTY_CITY_VALUE"],"<=PROPERTY_CLICK"=>$CLICK), false,false,array("PROPERTY_CLICK"))->Fetch();
+                 $CLICK2 = $maxClickRes["PROPERTY_CLICK_VALUE"];
+                 if(!$CLICK2)
+                     $CLICK2=4;
+                 else
+                     $CLICK2++;
+             }*/
 
 
             // Если баланс салона и ставка позволяет провести списание
             if($CLICK>0 && ($BALANCE-$CLICK2)>=0)
             {
-
-
-
                 echo "===3";
                 // Определяем IP
                 $IP = "";
@@ -105,7 +156,7 @@ if(isset($_REQUEST["s"]))
                     );
                     $spendCount = CIBlockElement::GetList(false, $arSpendFilter, Array());
 
-echo " - speedcount=".$spendCount." ";
+                    echo " - speedcount=".$spendCount." ";
                     if($spendCount>0)
                         $spendDo = 0;
 
@@ -120,7 +171,7 @@ echo " - speedcount=".$spendCount." ";
                         "NAME"           => "Клик",
                         "ACTIVE"         => "Y",
                         "PROPERTY_VALUES"=> array(
-                            "46" => $CLICK,
+                            "46" => $CLICK2,
                             "47" => $USER_ID,
                             "48" => $SALON,
                             "49" => array("VALUE" => 4),
@@ -134,7 +185,7 @@ echo " - speedcount=".$spendCount." ";
 
                     if($SPENDING = $el->Add($arLoadProductArray))
                     {
-                        echo "-ЕСТЬ СПИСАНИЕ-";
+                        echo '-ЕСТЬ СПИСАНИЕ на - '.$CLICK2;
                         // Уменьшаем баланс салона на ставку
                         CIBlockElement::SetPropertyValues($arFields["ID"], $arFields["IBLOCK_ID"], ($BALANCE-$CLICK2), "SUMM");
 
@@ -160,12 +211,6 @@ echo " - speedcount=".$spendCount." ";
                         }
                         // Устанавливаем новую сортировку
                         CIBlockElement::SetPropertyValues($arFields["ID"], $arFields["IBLOCK_ID"], $NEW_SORT, "SORT");
-						
-
-
-
-						
-				
 
                     }
                     else
