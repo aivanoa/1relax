@@ -1,0 +1,14 @@
+notification_type-p2p-incoming
+amount-497.51
+datetime-2018-09-25T07:00:46Z
+codepro-false
+withdraw_amount-500.00
+sender-410013980058738
+sha1_hash-21ef0ce0360bb62fffb483041da8cefafe0d4d57
+unaccepted-false
+operation_label-233bf0d3-0009-5000-8000-00003469032b
+operation_id-1182348092036052017
+currency-643
+label-1271_171287_novokuznetsk_171287-828
+mSign-21ef0ce0360bb62fffb483041da8cefafe0d4d57
+6

@@ -1,0 +1,24 @@
+
+
+.offer-popup{display:block;}
+.offer-popup-bgr{display:block;position:fixed;left:0;top:0;height:100%;width:100%;background:#000;opacity:.8;filter:Alpha(Opacity = 80);z-index:100000000}
+.offer-popup .offer-popup-inner{background:#000000;padding:20px 30px;width:630px;position:fixed;left:50%;top:50%;margin-left:-330px;margin-top:-240px;z-index:100000001;border:3px #FE2525 solid;border-radius:5px;-moz-box-shadow:0 0 50px 12px rgba(254,2,36,0.5);-webkit-box-shadow:0 0 50px 12px rgba(254,2,36,0.5);box-shadow:0 0 50px 12px rgba(254,2,36,0.5)}
+.offer-popup-inner h1{font-family:officinaserifcbold;font-weight:normal;font-size:21px}
+div.offer-popup a.close{float:right;width:10px;height:10px;background:url('http://ufa.1relax.ru/adv/icons.png') no-repeat; margin:0;padding:0}
+.offer-popup div.text-container{margin-top:10px;padding:1px 0 3px 0;color:black}
+.offer-popup div.overview{font-size:12px;color:#797979}
+.offer-popup div.overview p{margin:0 0 12px 0}
+.offer-popup h1 {margin:0;text-align:center}
+.offer-popup h1 a{margin:0;text-align:center;font-family: Geneva, Arial, Helvetica, sans-serif;font-size:18px;text-decoration:underline;color:white;}
+.offer-popup h2{font-family: Geneva, Arial, Helvetica, sans-serif;font-size:16px;color:white;margin-right:0!important}
+.offer-popup h3{font-family: Geneva, Arial, Helvetica, sans-serif;font-size:12px;font-style:italic;color:grey;margin-right:0!important}
+.offer-popup form{text-align:center;padding-top:20px;padding-left:70px}
+.offer-popup form button{margin-right:10px;vertical-align:middle}
+div.offer-popup div.viewport{width:100%;max-height:282px}
+div.offer-popup div.overview{margin-right:20px;float:none;width:auto}
+div.offer-popup div.scrollbar-vertical{margin-top:10px}
+.offer-popup .offer-buttons{border-top:1px #d9d9d9 solid;margin:19px -30px 0 -30px}
+.offer-popup .offer-buttons a{font-style:italic}
+
+
+

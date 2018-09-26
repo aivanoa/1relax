@@ -1,0 +1,144 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline
+}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+	display: block
+}
+body {
+	line-height: 1;
+}
+ol, ul, li {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none
+}
+blockquote:before, blockquote:after, q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0
+}
+a, a:hover {
+	text-decoration: none;
+	outline:none;
+}
+* {
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box
+}
+.clear:before, .clear:after {
+	content: '';
+	display: table
+}
+.clear:after {
+	clear: both
+}
+/*END RESET CSS*/
+@import url('https://fonts.googleapis.com/css?family=Days+One');
+#modal_form {
+	width: 520px; 
+	height: 500px; 
+	background: #dd6545;
+	position: fixed; 
+	top: 45%; 
+	left: 50%; 
+	margin-top: -250px;
+	margin-left: -260px; 
+	display: none; 
+	opacity: 0; 
+	z-index: 120; 
+}
+#modal_form #modal_close {
+	width: 34px;
+	height: 34px;
+	position: absolute;
+	top: 10px;
+	right: 20px;
+	cursor: pointer;
+	display: block;
+}
+#overlay {
+	z-index:100; 
+	position:fixed; 
+	background-color:#000; 
+	opacity:0.8; 
+	-moz-opacity:0.8; 
+	filter:alpha(opacity=80);
+	width:100%; 
+	height:100%; 
+	top:0; 
+	left:0;
+	display:none; 
+}
+
+#modal_form h2{
+	font-family: 'Days One', sans-serif;
+	font-size: 26px;
+	font-weight: 700;
+	color:#fff;
+	text-align: center;
+	height: 80px;
+	line-height: 80px;
+	background: #853d29;
+}
+#modal_form form{
+	padding-left: 55px;
+	padding-top: 35px;
+}
+#modal_form form input,
+#modal_form form textarea{
+	width: 270px;
+	height: 30px;
+	background: #fff;
+	border-radius: 5px;
+	margin-bottom: 20px;
+	padding-left: 10px;
+	font-size: 16px;
+	border:none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	outline: none;
+}
+#modal_form form label{
+	font-size: 18px;
+	font-family: 'Arial', sans-serif;
+	padding-left: 25px;
+	color:#fff;
+	position: relative;
+	top: 6px;
+	vertical-align: top;
+}
+#modal_form form textarea{
+	height: 70px;
+	resize: none;
+	padding-top: 10px;
+}
+#modal_form form textarea + label{
+	top:25px;
+}
+#modal_form form input[type="submit"]{
+	position: absolute;
+	width: 100%;
+	left: 0;
+	bottom: 0;
+	margin: 0;
+	border-radius: 0;
+	height: 93px;
+	font-size: 32px;
+	color: #fff;
+	font-weight: 700;
+	font-family: 'Days One', sans-serif;
+	background: #000 url(../img/bg-submit.jpg) 0 0 no-repeat;
+	cursor: pointer;
+}
+
